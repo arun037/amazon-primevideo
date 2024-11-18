@@ -59,7 +59,7 @@ pipeline {
         
         stage('docker image build') {
             steps {
-                sh 'docker build -t $IMAGE_TAG'
+                sh 'docker build -t $IMAGE_TAG .'
             }
         }
         
@@ -81,10 +81,10 @@ pipeline {
          stage('Docker Scout Image') {
             steps {
                 script{
-                   withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
-                       sh 'docker-scout quickview amonkincloud/amazon-prime:latest'
-                       sh 'docker-scout cves amonkincloud/amazon-prime:latest'
-                       sh 'docker-scout recommendations amonkincloud/amazon-prime:latest'
+                   withDockerRegistry(credentialsId: 'docker-token'){
+                       sh 'docker-scout quickview $IMAGE_TAG'
+                       sh 'docker-scout cves $IMAGE_TAG'
+                       sh 'docker-scout recommendations $IMAGE_TAG'
                    }
                 }
             }
