@@ -31,6 +31,7 @@ pipeline {
                     -Dsonar.projectKey=amazon-prime '''
                 }
             }
+        }
             
         stage('Qualitygate Analysis') {
             steps {
