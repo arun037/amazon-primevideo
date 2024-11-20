@@ -45,12 +45,13 @@ pipeline {
             }
         }
         
-        stage("OWASP FS SCAN") {
+         stage("OWASP FS SCAN") {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
+        
         
         stage('trivy file-system scan') {
             steps {
@@ -72,9 +73,10 @@ pipeline {
         
         stage('image push to repo') {
             steps {
-                withDockerRegistry(credentialsId: 'docker-token') {
+                script {
+                    withDockerRegistry(credentialsId: 'docker-token') {
                     sh 'docker push $IMAGE_TAG'
-
+                    }
                 }
             }
         }
